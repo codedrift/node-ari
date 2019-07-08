@@ -9,14 +9,8 @@ services:
       - "5061:5061"
       - "8080:8080"
       - "8443:8443"
-    environment:
-      - DEEPVOICE_PORT=9000
-      - TRUNK_TYPE
-      - TRUNK_ACCOUNT
-      - TRUNK_PASSWORD
-      - ARI_USER
-      - ARI_PASSWORD
-      - ARI_APPLICATION
+    env_file:
+      - ../asterisk.env
   deepvoice:
     image: rjp44/deepvoice-s
     restart: unless-stopped
