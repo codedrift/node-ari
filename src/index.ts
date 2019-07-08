@@ -1,11 +1,8 @@
 import * as client from "ari-client";
 
 const CONFIG: any = {
-	app: {
-		name: "node-ari"
-	},
 	asterisk: {
-		host: "127.0.0.1",
+		host: "35.246.120.198",
 		port: 8080,
 		application: "myApp",
 		username: "asterisk",
@@ -56,7 +53,7 @@ async function startApp(): Promise<void> {
 			}
 		});
 	});
-	ari.start(CONFIG.app.name);
+	ari.start(CONFIG.asterisk.application);
 }
 
 startApp().catch(console.error);
