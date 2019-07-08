@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  asterisk-16-ari:
+    image: rjp44/asterisk-16-ari
+    restart: unless-stopped
+    container_name: asterisk-16-ari
+    ports:
+      - "5061:5061"
+      - "8080:8080"
+      - "8443:8443"
+    environment:
+      - DEEPVOICE_PORT=9000
+      - TRUNK_TYPE
+      - TRUNK_ACCOUNT
+      - TRUNK_PASSWORD
+      - ARI_USER
+      - ARI_PASSWORD
+      - ARI_APPLICATION
+  deepvoice:
+    image: rjp44/deepvoice-s
+    restart: unless-stopped
+    container_name: deepvoice
+    ports:
+      - "9000:9000"
