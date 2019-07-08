@@ -2,11 +2,11 @@ import * as client from "ari-client";
 
 const CONFIG: any = {
 	asterisk: {
-		host: "35.246.120.198",
+		host: process.env.ASTERISK_IP,
 		port: 8080,
 		application: "myApp",
-		username: "asterisk",
-		password: "asterisk"
+		username: process.env.ASTERISK_USER,
+		password: process.env.ASTERISK_PASSWORD
 	},
 	deepvoice: {
 		url: "http://192.168.1.203:9000/synthesize"
