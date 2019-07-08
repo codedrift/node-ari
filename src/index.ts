@@ -1,6 +1,6 @@
 import * as client from "ari-client";
 
-const CONFIG = {
+const CONFIG: any = {
 	app: {
 		name: "node-ari"
 	},
