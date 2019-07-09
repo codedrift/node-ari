@@ -23,7 +23,8 @@ export async function synthesize(text: string): Promise<void> {
 				name: "de-DE-Wavenet-B"
 			},
 			audioConfig: {
-				audioEncoding: "MP3",
+				audioEncoding: "MP3"
+				// sampleRateHertz: 8000
 			}
 		};
 
@@ -41,7 +42,8 @@ export async function synthesize(text: string): Promise<void> {
 		const [{ audioContent }] = await client.synthesizeSpeech(ttsRequest);
 
 		cache.set(key, audioContent);
-		await writeAudioFile("somefile.mp3", audioContent);
+
+		await writeAudioFile(`audio.mp3`, audioContent);
 	} catch (e) {
 		console.error("Unable to synthesize text", e);
 	}

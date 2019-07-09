@@ -12,5 +12,7 @@ export function StasisStart(ariClient: any): any {
 		await playMediaFromUrl(ariClient, incomingChannel, "https://static.codedrift.net/audio/clinq.wav");
 
 		incomingChannel.on("ChannelDtmfReceived", ChannelDtmfReceived(ariClient));
+
+		// await incomingChannel.hangup();
 	};
 }
