@@ -11,9 +11,3 @@ services:
       - "8443:8443"
     env_file:
       - ../asterisk.env
-  deepvoice:
-    image: rjp44/deepvoice-s
-    restart: unless-stopped
-    container_name: deepvoice
-    ports:
-      - "9000:9000"
