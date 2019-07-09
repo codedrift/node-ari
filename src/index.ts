@@ -1,59 +1,32 @@
 import * as client from "ari-client";
+import { StasisStart } from "./stasis";
 
-const CONFIG: any = {
+export const CONFIG: any = {
 	asterisk: {
 		host: process.env.ASTERISK_IP,
-		port: 8080,
-		application: "myApp",
+		port: 8080, // ari port
+		application: "myApp", // app name configured in the asterisk
 		username: process.env.ASTERISK_USER,
 		password: process.env.ASTERISK_PASSWORD
 	},
 	deepvoice: {
-		url: "http://192.168.1.203:9000/synthesize"
+		url: "http://deepvoice:9000/synthesize"
 	}
 };
 
 async function startApp(): Promise<void> {
 	console.log("Starting with config", CONFIG);
-	const url: string = `http://${CONFIG.asterisk.host}:${CONFIG.asterisk.port}/ari`;
+	const {
+		asterisk: { username, port, password, host, application }
+	} = CONFIG;
 
-	// Channel.play() wants an Object that contains the plaback URL and playback function
-	//  convenience function to populate this.
-	const msgFormat: any = (msg, ariInstance) => ({
-		media: `sound:${CONFIG.deepvoice.url}?text=${encodeURIComponent(msg)}`,
-		playback: ariInstance.Playback()
-	});
+	const ariUrl: string = `http://${host}:${port}/ari`;
 
-	const ari: any = await client.connect(url, CONFIG.asterisk.username, CONFIG.asterisk.password);
+	const ariClient: any = await client.connect(ariUrl, username, password);
 
-	ari.on("StasisStart", (event, incomingChannel) => {
-		console.log("New channel ", incomingChannel.id);
-		incomingChannel.answer().then(() => {
-			console.log("Answered a call from ", incomingChannel.caller.number);
-			incomingChannel
-				.play(msgFormat(`Hello ${incomingChannel.caller.number.split("").join(" ")}`, ari))
-				.then(() => incomingChannel.play(msgFormat("Welcome to our application", ari)))
-				.then(() => incomingChannel.play(msgFormat("Type some digits and see what happens", ari)));
-		});
-		incomingChannel.on("ChannelDtmfReceived", (channelEvent, channel) => {
-			const digit: any = channelEvent.digit;
-			console.log("got digit: ", digit);
-			if (digit !== "6") {
-				channel
-					.play(msgFormat("you pressed the digit " + digit, ari))
-					.then(() => channel.play(msgFormat("You naughty person", ari)))
-					.then(() => channel.play(msgFormat("Do not do that again!", ari)));
-			} else {
-				channel
-					.play(msgFormat("Great you pressed " + digit, ari))
-					.then(() => channel.play(msgFormat("That was a cool choice", ari)))
-					.then(() => channel.play(msgFormat("Good work you win", ari)))
-					.then(() => channel.play(msgFormat("Nice talking to you Goodbye", ari)))
-					.then((playback, err) => playback.once("PlaybackFinished", () => channel.hangup()));
-			}
-		});
-	});
-	ari.start(CONFIG.asterisk.application);
+	ariClient.on("StasisStart", StasisStart(ariClient));
+
+	ariClient.start(application);
 }
 
 startApp().catch(console.error);
