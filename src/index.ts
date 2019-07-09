@@ -45,6 +45,8 @@ async function startApp(): Promise<void> {
 
 	await loadGcpCredentials();
 
+	// synthesize("Herzlich wilkommen bei Klink! Hier können Sie nicht die Sprachqualität ihres Endgerätes überprüfen. Tschüss");
+
 	const {
 		asterisk: { username, port, password, host, application }
 	} = CONFIG;
