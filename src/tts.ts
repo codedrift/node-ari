@@ -7,6 +7,12 @@ function getCacheKey(ttsRequest: any): string {
 	return JSON.stringify(ttsRequest);
 }
 
+enum AudioEncoding {
+	MP3 = "MP3",
+	LINEAR16 = "LINEAR16",
+	OGG_OPUS = "OGG_OPUS"
+}
+
 async function writeAudioFile(name: string, content: any): Promise<void> {
 	console.log("Writing file", name);
 	await fsPromise.writeFile(name, content);
@@ -23,7 +29,7 @@ export async function synthesize(text: string): Promise<void> {
 				name: "de-DE-Wavenet-B"
 			},
 			audioConfig: {
-				audioEncoding: "MP3"
+				audioEncoding: AudioEncoding.OGG_OPUS
 				// sampleRateHertz: 8000
 			}
 		};
@@ -43,7 +49,7 @@ export async function synthesize(text: string): Promise<void> {
 
 		cache.set(key, audioContent);
 
-		await writeAudioFile(`audio.mp3`, audioContent);
+		await writeAudioFile("/tmp/audio.mp3", audioContent);
 	} catch (e) {
 		console.error("Unable to synthesize text", e);
 	}

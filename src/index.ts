@@ -8,7 +8,7 @@ export const CONFIG: any = {
 	asterisk: {
 		host: process.env.ASTERISK_IP,
 		port: 8080, // ari port
-		application: "myApp", // app name configured in the asterisk
+		application: "clinq", // app name configured in the asterisk
 		username: process.env.ASTERISK_USER,
 		password: process.env.ASTERISK_PASSWORD
 	},
