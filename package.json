@@ -16,7 +16,7 @@
 		"base-64": "^0.1.0",
 		"env-cmd": "^9.0.3",
 		"fs-extra": "^8.1.0",
-		"lodash": "^4.17.11",
+		"lodash": "^4.17.19",
 		"typescript": "^3.5.2"
 	},
 	"devDependencies": {
